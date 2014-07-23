@@ -1,0 +1,12 @@
+{
+  "name": "lancaster-stemmer-gh-pages",
+  "private": true,
+  "repository": "wooorm/lancaster-stemmer",
+  "dependencies": {
+    "wooorm/lancaster-stemmer": "^0.1.0"
+  },
+  "scripts": [
+    "index.js"
+  ],
+  "license": "MIT"
+}

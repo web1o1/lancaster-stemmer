@@ -1,11 +1,34 @@
-var lancasterStemmer = require('lancaster-stemmer');
-var inputElement = document.getElementsByTagName('input')[0];
-var outputElement = document.getElementsByTagName('output')[0];
+'use strict';
 
-function stem() {
-    outputElement.textContent = lancasterStemmer(inputElement.value);
+/**
+ * Dependencies.
+ */
+
+var lancasterStemmer = require('wooorm/lancaster-stemmer@0.1.3');
+
+/**
+ * DOM elements.
+ */
+
+var $input = document.getElementsByTagName('input')[0];
+var $output = document.getElementsByTagName('output')[0];
+
+/**
+ * Event handler.
+ */
+
+function oninputchange() {
+    $output.textContent = lancasterStemmer($input.value);
 }
 
-inputElement.addEventListener('input', stem);
+/**
+ * Listen.
+ */
 
-stem();
+$input.addEventListener('input', oninputchange);
+
+/**
+ * Initial answer.
+ */
+
+oninputchange();

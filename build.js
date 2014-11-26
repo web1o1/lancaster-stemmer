@@ -1,58 +1,125 @@
-/**
- * Require the module at `name`.
- *
- * @param {String} name
- * @return {Object} exports
- * @api public
- */
+(function outer(modules, cache, entries){
 
-function require(name) {
-  var module = require.modules[name];
-  if (!module) throw new Error('failed to require "' + name + '"');
+  /**
+   * Global
+   */
 
-  if (!('exports' in module) && typeof module.definition === 'function') {
-    module.client = module.component = true;
-    module.definition.call(this, module.exports = {}, module);
-    delete module.definition;
+  var global = (function(){ return this; })();
+
+  /**
+   * Require `name`.
+   *
+   * @param {String} name
+   * @param {Boolean} jumped
+   * @api public
+   */
+
+  function require(name, jumped){
+    if (cache[name]) return cache[name].exports;
+    if (modules[name]) return call(name, require);
+    throw new Error('cannot find module "' + name + '"');
   }
 
-  return module.exports;
+  /**
+   * Call module `id` and cache it.
+   *
+   * @param {Number} id
+   * @param {Function} require
+   * @return {Function}
+   * @api private
+   */
+
+  function call(id, require){
+    var m = cache[id] = { exports: {} };
+    var mod = modules[id];
+    var name = mod[2];
+    var fn = mod[0];
+
+    fn.call(m.exports, function(req){
+      var dep = modules[id][1][req];
+      return require(dep ? dep : req);
+    }, m, m.exports, outer, modules, cache, entries);
+
+    // expose as `name`.
+    if (name) cache[name] = cache[id];
+
+    return cache[id].exports;
+  }
+
+  /**
+   * Require all entries exposing them on global if needed.
+   */
+
+  for (var id in entries) {
+    if (entries[id]) {
+      global[entries[id]] = require(id);
+    } else {
+      require(id);
+    }
+  }
+
+  /**
+   * Duo flag.
+   */
+
+  require.duo = true;
+
+  /**
+   * Expose cache.
+   */
+
+  require.cache = cache;
+
+  /**
+   * Expose modules
+   */
+
+  require.modules = modules;
+
+  /**
+   * Return newest require.
+   */
+
+   return require;
+})({
+1: [function(require, module, exports) {
+'use strict';
+
+/**
+ * Dependencies.
+ */
+
+var lancasterStemmer = require('wooorm/lancaster-stemmer@0.1.3');
+
+/**
+ * DOM elements.
+ */
+
+var $input = document.getElementsByTagName('input')[0];
+var $output = document.getElementsByTagName('output')[0];
+
+/**
+ * Event handler.
+ */
+
+function oninputchange() {
+    $output.textContent = lancasterStemmer($input.value);
 }
 
 /**
- * Registered modules.
+ * Listen.
  */
 
-require.modules = {};
+$input.addEventListener('input', oninputchange);
 
 /**
- * Register module at `name` with callback `definition`.
- *
- * @param {String} name
- * @param {Function} definition
- * @api private
+ * Initial answer.
  */
 
-require.register = function (name, definition) {
-  require.modules[name] = {
-    definition: definition
-  };
-};
+oninputchange();
 
-/**
- * Define a module's exports immediately with `exports`.
- *
- * @param {String} name
- * @param {Generic} exports
- * @api private
- */
-
-require.define = function (name, exports) {
-  require.modules[name] = {
-    exports: exports
-  };
-};
-require.register("wooorm~lancaster-stemmer@0.1.2", function (exports, module) {
+}, {"wooorm/lancaster-stemmer@0.1.3":2}],
+2: [function(require, module, exports) {
 'use strict';
 
 var STOP,
@@ -793,21 +860,4 @@ function lancasterStemmer(value) {
 
 module.exports = lancasterStemmer;
 
-});
-
-require.register("lancaster-stemmer-gh-pages", function (exports, module) {
-var lancasterStemmer = require('wooorm~lancaster-stemmer@0.1.2');
-var inputElement = document.getElementsByTagName('input')[0];
-var outputElement = document.getElementsByTagName('output')[0];
-
-function stem() {
-    outputElement.textContent = lancasterStemmer(inputElement.value);
-}
-
-inputElement.addEventListener('input', stem);
-
-stem();
-
-});
-
-require("lancaster-stemmer-gh-pages");
+}, {}]}, {}, {"1":""})

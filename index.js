@@ -4,7 +4,7 @@
  * Dependencies.
  */
 
-var lancasterStemmer = require('wooorm/lancaster-stemmer@0.1.3');
+var lancasterStemmer = require('wooorm/lancaster-stemmer@0.1.4');
 
 /**
  * DOM elements.

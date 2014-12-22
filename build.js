@@ -89,7 +89,7 @@
  * Dependencies.
  */
 
-var lancasterStemmer = require('wooorm/lancaster-stemmer@0.1.3');
+var lancasterStemmer = require('wooorm/lancaster-stemmer@0.1.4');
 
 /**
  * DOM elements.
@@ -118,7 +118,7 @@ $input.addEventListener('input', oninputchange);
 
 oninputchange();
 
-}, {"wooorm/lancaster-stemmer@0.1.3":2}],
+}, {"wooorm/lancaster-stemmer@0.1.4":2}],
 2: [function(require, module, exports) {
 'use strict';
 
@@ -129,7 +129,7 @@ var STOP,
     rules,
     EXPRESSION_VOWELS;
 
-/**
+/*
  * Constants.
  */
 
@@ -139,7 +139,7 @@ CONTINUE = 1;
 PROTECT = 2;
 EXPRESSION_VOWELS = /[aeiouy]/;
 
-/**
+/*
  * Rules.
  */
 
@@ -775,7 +775,6 @@ rules = {
  * @param {string} value - Input.
  * @return {boolean} Whether the input is acceptable.
  */
-
 function isAcceptable(value) {
     return EXPRESSION_VOWELS.test(value.charAt(0)) ?
         value.length > 1 :
@@ -789,7 +788,6 @@ function isAcceptable(value) {
  * @param {boolean} isIntact - Whether the input is unchanged.
  * @return {string} stem according to Lancaster.
  */
-
 function applyRules(value, isIntact) {
     var ruleset,
         index,
@@ -849,12 +847,11 @@ function applyRules(value, isIntact) {
  * @param {string} value - Value to stem.
  * @return {string} stem according to Lancaster.
  */
-
 function lancasterStemmer(value) {
     return applyRules(String(value).toLowerCase(), true);
 }
 
-/**
+/*
  * Expose `lancasterStemmer`.
  */
 

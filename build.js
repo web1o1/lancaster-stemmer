@@ -15,27 +15,16 @@ function oninputchange() {
 }
 
 },{"lancaster-stemmer":2}],2:[function(require,module,exports){
-/**
- * @author Titus Wormer
- * @copyright 2014 Titus Wormer
- * @license MIT
- * @module lancaster-stemmer
- * @fileoverview Lancaster stemming algorithm.
- */
-
 'use strict';
 
-/* Expose. */
 module.exports = lancasterStemmer;
 
-/* Constants. */
 var STOP = -1;
 var INTACT = 0;
 var CONTINUE = 1;
 var PROTECT = 2;
 var VOWELS = /[aeiouy]/;
 
-/* Rules. */
 var rules = {
   a: [
     {match: 'ia', replacement: '', type: INTACT},
@@ -193,17 +182,10 @@ var rules = {
   ]
 };
 
-/**
- * Stem a value.
- *
- * @param {string} value - Value to stem.
- * @return {string} stem according to Lancaster.
- */
 function lancasterStemmer(value) {
   return applyRules(String(value).toLowerCase(), true);
 }
 
-/* Apply rules to a value. */
 function applyRules(value, isIntact) {
   var ruleset = rules[value.charAt(value.length - 1)];
   var breakpoint;
